@@ -1,5 +1,5 @@
 // Kane Kriz
-// UWYO COSC 3020 Algorithms - parallel mergesort primary js code
+// UWYO COSC 3020 Algorithms - parallel mergesort primary code.js file
 // 10 May 2025
 //
 //
