@@ -13,9 +13,6 @@
 
 
 
-
-var Parallel = require('paralleljs');
-
 function parallelMergeSort(inputArray) 
 {
     var corePlaceholderCount;
@@ -24,62 +21,58 @@ function parallelMergeSort(inputArray)
     var sortedPartitions;
     var mergedPartitions;
 
-  //
-  
     var inputLength = inputArray.length;
-    corePlaceholderCount = 2; //alter, test stability. Could somehow be incorporated into test code maybe
+    corePlaceholderCount = 2;
+
+    //
   
     if(inputLength <= 1) 
     {
         return inputArray;
     }
 
-    partitionSize = Math.ceil(inputLength / corePlaceholderCount); //determined based upon above placeholder account, rather than somehow trying to judge a machines actual core count
+    partitionSize = Math.ceil(inputLength / corePlaceholderCount);
 
-  //map
     partitions = [];
   
     for(var i = 0; i < inputLength; i += partitionSize)
     {
         var endPos = i + partitionSize;
-      
-        if(endPos > inputLength) 
+        
+        if(endPos > inputLength)
         {
-          endPos = inputLength;
+            endPos = inputLength;
         }
-      
+        
         partitions.push(inputArray.slice(i, endPos));
     }
 
     var partitionsLength = partitions.length;
-      
-    var p = new Parallel(partitions);
-    sortedPartitions = p.map(function(partition)
+    
+    sortedPartitions = partitions.map(function(partition) 
     {
-        return global.solvePartition(partition);
-    }
-                            );
-  
-  //reduce  
+        return solvePartition(partition); 
+    });
+
     var sortedPartsLength = sortedPartitions.length;
-  
+    
     while(sortedPartsLength > 1)
     {
         mergedPartitions = [];
-      
+        
         for(var i = 0; i < sortedPartsLength; i += 2)
         {
             if(i + 1 < sortedPartsLength)
             {
                 mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
             }
-              
+                
             else
             {
                 mergedPartitions.push(sortedPartitions[i]);
             }
         }
-      
+        
         sortedPartitions = mergedPartitions;
         sortedPartsLength = sortedPartitions.length;
     }
@@ -88,10 +81,9 @@ function parallelMergeSort(inputArray)
 }
 
 
-////
-
 
 ////
+
 
 
 
@@ -106,7 +98,7 @@ function solvePartition(partition)
     var rightPos;
     var temp;
 
-  //
+    //
 
     for(currentSize = 1; currentSize < partitionSize; currentSize *= 2) 
     {
@@ -118,21 +110,18 @@ function solvePartition(partition)
             leftPos = startPos; 
             rightPos = midpointPos;     
             
-            var endPosFixed = endPos;
-          
-            while((leftPos < midpointPos) && (rightPos < endPosFixed))
+            while((leftPos < midpointPos) && (rightPos < endPos))
             {
                 if(partition[leftPos] <= partition[rightPos]) 
                 {
                     leftPos++;
-                } 
-                  
+                }
+                    
                 else 
                 {
                     temp = partition[rightPos];
-                    var startShiftPos = rightPos;
                     
-                    for(var i = startShiftPos; i > leftPos; i--) 
+                    for(var i = rightPos; i > leftPos; i--) 
                     {
                         partition[i] = partition[i - 1];
                     }
@@ -150,6 +139,7 @@ function solvePartition(partition)
 }
 
 
+
 ////
 
 
@@ -161,8 +151,8 @@ function reduceMerge(leftPartition, rightPartition)
     var rightPos = 0;
     var leftLength = leftPartition.length;
     var rightLength = rightPartition.length;
-  
-  //
+
+    //
     
     while((leftPos < leftLength) && (rightPos < rightLength)) 
     {
@@ -171,7 +161,7 @@ function reduceMerge(leftPartition, rightPartition)
             mergedResult.push(leftPartition[leftPos]);
             leftPos++;
         }
-          
+            
         else
         {
             mergedResult.push(rightPartition[rightPos]);
@@ -193,7 +183,6 @@ function reduceMerge(leftPartition, rightPartition)
     
     return mergedResult;
 }
-
 
 
 ////
