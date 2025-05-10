@@ -14,6 +14,8 @@
 
 
 
+var Parallel = require('paralleljs');
+
 function parallelMergeSort(inputArray) 
 {
     var corePlaceholderCount;
@@ -51,10 +53,8 @@ function parallelMergeSort(inputArray)
 
     var partitionsLength = partitions.length;
   
-    sortedPartitions = partitions.map(function(partition) 
-    {
-        return solvePartition(partition); 
-    });
+    var p = new Parallel(partitions, { env: { solvePartition: solvePartition } });
+    sortedPartitions = p.map(function(partition) { return solvePartition(partition); });
 
   
   //reduce  
@@ -83,6 +83,9 @@ function parallelMergeSort(inputArray)
 
     return sortedPartitions[0];
 }
+
+
+////
 
 
 ////
