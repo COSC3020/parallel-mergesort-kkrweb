@@ -25,7 +25,7 @@ Start Date: 17 April 2025
 
 Last Edited: 10 May 2025
 
-Feedback Request 1 Date: X
+Feedback Request 1 Date: 10 May 2025
 
 
 
@@ -34,7 +34,7 @@ Feedback Request 1 Date: X
 
 
 
-Response: WIP
+Response:
 
 Note: See disclaimer from the JS file regarding some inconsistencies between this explanation and the actual JS file I submitted to pass the test code.
 I am of course 1000% willing to make adjustments given potential guidance on how to import, or potentially this 95% of the way there logical following of the concept as a whole may be sufficient.
@@ -97,4 +97,19 @@ Plagiarism Acknowledgement: I certify that I have listed all sources used to com
 
 Citations: WIP
 
+https://www.cs.princeton.edu/~dpw/courses/cos326-12/notes/parallel-schedules.php
+
+https://parallel.js.org/
+
+https://www.geeksforgeeks.org/introduction-to-directed-acyclic-graph/
+
+https://en.wikipedia.org/wiki/Directed_acyclic_graph
+
+https://www.geeksforgeeks.org/directed-acyclic-graph-in-compiler-design-with-examples/
+
+https://www.npmjs.com/package/paralleljs
+
+https://en.wikipedia.org/wiki/MapReduce
+
+https://www.geeksforgeeks.org/mapreduce-architecture/
 
