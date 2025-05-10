@@ -66,13 +66,13 @@ The implementation builds a binary merge tree with $log p$ levels.
 
 Each merge level processes all n elements sequentially via `reduceMerge`, contributing $Θ(n)$ span per level that it considers. 
 
-This results in $Θ(n log p)$ total span for the reduce section.
+This results in $Θ(n * log p)$ total span for the reduce section.
 
 The worst case span combines both phases. 
 
-The map phase's $Θ(n/p log n)$ dominates when $log n$ exceeds $log p$.
+The map phase's $Θ((n/p) * log n)$ dominates when $log n$ exceeds $log p$.
 
-On the other hand, the reduce phase's $Θ(n log p)$ dominates when p grows alongside n.
+On the other hand, the reduce phase's $Θ(n * log p)$ dominates when p grows alongside n.
 
 The analysis holds despite the sequential implementation because the code structure preserves the logical dependencies of a parallel merge sort.
 
@@ -82,9 +82,9 @@ The `solvePartition` operations represent independent work units, while the `red
 
 The worst case occurs when the algorithm must fully sort each partition and execute all merge steps.
 
-The $Θ(n/p log n + n log p)$ bound considers both parallel sorting and sequential merging costs.
+The $Θ((n/p) * log n + n log p)$ bound considers both parallel sorting and sequential merging costs.
 
-Thus, the worst case span of this parallel merge sort implementation is $Θ(n/p log n + n log p)$.
+Thus, the worst case span of this parallel merge sort implementation is $Θ((n/p) * log n + n log p)$.
 
 
 
