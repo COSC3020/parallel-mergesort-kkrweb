@@ -78,9 +78,31 @@ The analysis holds despite the sequential implementation because the code struct
 
 The `solvePartition` operations represent independent work units, while the `reduceMerge` create applicable dependencies as intended. 
 
-[Refrence to DAG logic. Cite help used. I had no clue what a DAG meant
+The computation can be modeled as a DAG directed acyclic graph where nodes correspond to computational tasks. 
 
-The worst case occurs when the algorithm must fully sort each partition and execute all merge steps.
+Each sorting operation in `solvePartition` becomes an independent node that could execute in parallel. 
+
+The `reduceMerge` operations establish dependencies between nodes forming the DAG's potential edges.
+
+The longest path through this graph determines the algorithm's span. 
+
+This path starts with the initial partition sorting and proceeds through each necessary merge operation. 
+
+The independent partition sorts allow for parallel execution, while the merging processes force sequential functionality.
+
+This graph structure explains how the implementation preserves parallel complexity characteristics.
+
+The `solvePartition` nodes represent parallel work units that could theoretically execute concurrently. 
+
+The `reduceMerge` edges create the critical path that limits overall execution time.
+
+The DAG model shows why the span analysis holds despite sequential execution. 
+
+The algorithm's structure maintains the same task dependencies that would exist in a parallel system. 
+
+This validates the theoretical complexity analysis through the computation's graph properties that still stand as they would if this parallel implementation was true in (working) form rather than theory.
+
+Overall, the worst case occurs when the algorithm must fully sort each partition and execute all merge steps.
 
 The $Θ((n/p) * log n + n log p)$ bound considers both parallel sorting and sequential merging costs.
 
@@ -92,24 +114,28 @@ Thus, the worst case span of this parallel merge sort implementation is $Θ((n/p
 //
 
 
+
+
 Plagiarism Acknowledgement: I certify that I have listed all sources used to complete this exercise, including the use of any Large Language Models. All of the work is my own, except where stated otherwise. I am aware that plagiarism carries severe penalties and that if plagiarism is suspected, charges may be filed against me without prior notice.
 
 
-Citations: WIP
 
-https://www.cs.princeton.edu/~dpw/courses/cos326-12/notes/parallel-schedules.php
 
-https://parallel.js.org/
+Citations:
 
-https://www.geeksforgeeks.org/introduction-to-directed-acyclic-graph/
 
-https://en.wikipedia.org/wiki/Directed_acyclic_graph
+“COS 326: Functional Programming.” Www.cs.princeton.edu, www.cs.princeton.edu/~dpw/courses/cos326-12/notes/parallel-schedules.php.
 
-https://www.geeksforgeeks.org/directed-acyclic-graph-in-compiler-design-with-examples/
+“Parallel.js - Javascript Parallel Computing.” Js.org, 2025, parallel.js.org/. Accessed 10 May 2025.
 
-https://www.npmjs.com/package/paralleljs
+“Introduction to Directed Acyclic Graph.” GeeksforGeeks, 8 Nov. 2023, www.geeksforgeeks.org/introduction-to-directed-acyclic-graph/.
 
-https://en.wikipedia.org/wiki/MapReduce
+Wikipedia Contributors. “Directed Acyclic Graph.” Wikipedia, Wikimedia Foundation, 11 Dec. 2019, en.wikipedia.org/wiki/Directed_acyclic_graph.
 
-https://www.geeksforgeeks.org/mapreduce-architecture/
+“Directed Acyclic Graph in Compiler Design (with Examples).” GeeksforGeeks, 10 June 2021, www.geeksforgeeks.org/directed-acyclic-graph-in-compiler-design-with-examples/.
 
+“Paralleljs.” Npm, 6 Oct. 2020, www.npmjs.com/package/paralleljs. Accessed 10 May 2025.
+
+“MapReduce.” Wikipedia, 22 Apr. 2020, en.wikipedia.org/wiki/MapReduce.
+
+“MapReduce Architecture.” GeeksforGeeks, 8 Sept. 2020, www.geeksforgeeks.org/mapreduce-architecture/.
