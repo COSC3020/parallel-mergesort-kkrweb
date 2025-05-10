@@ -95,7 +95,7 @@ function parallelMergeSort(inputArray)
 
 
 
-function global.solvePartition(partition) 
+function solvePartition(partition) 
 {
     var partitionSize = partition.length;
     var currentSize;
