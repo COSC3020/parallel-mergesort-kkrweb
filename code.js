@@ -8,9 +8,36 @@
 
 
 
+//___________________________________________________________________________
+
+/**  
+ _____ DISCLAIMER: 
+ 
+ This implementation logically follows parallel merge sort  
+ ...but runs sequentially due to JS of course being single threaded and my intense difficulty getting paralleljs imported into the repo, file, or global environment in any capacity as was done in class. 
+
+ The span analysis Θ(n/p log n + n log p) from within the readme assumes parallel execution and working ideal circumstances.  
+
+This is probably me making a dumb mistake with workflows or github file interactions but I thought that submitting this with the analysis would be sufficient,
+...largely in part due to the actual intended paralleljs functionality being ported into this file would take a few lines at maximum and swapping of a slight amount of logic.
+
+If this is sufficient or not, please let me know.
+
+Exercise #30, and I of course want to do it right. Maybe there is some simple solution that I am missing to help import paralleljs, or maybe I don't have permissions to import packages like that within this class format.
+
+Either way, I'm sure you would know.
+
+Thank you for the help and consideration throughtout the semester.
+
+**/
+
+//___________________________________________________________________________
+
+
+
+
+
 ////
-
-
 
 
 function parallelMergeSort(inputArray) 
