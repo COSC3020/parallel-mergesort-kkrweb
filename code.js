@@ -52,10 +52,13 @@ function parallelMergeSort(inputArray)
     }
 
     var partitionsLength = partitions.length;
-  
-    var p = new Parallel(partitions, { env: { solvePartition: solvePartition } });
-    sortedPartitions = p.map(function(partition) { return solvePartition(partition); });
-
+      
+    var p = new Parallel(partitions);
+    sortedPartitions = p.map(function(partition)
+    {
+        return global.solvePartition(partition);
+    }
+                            );
   
   //reduce  
     var sortedPartsLength = sortedPartitions.length;
@@ -92,7 +95,7 @@ function parallelMergeSort(inputArray)
 
 
 
-function solvePartition(partition) 
+function global.solvePartition(partition) 
 {
     var partitionSize = partition.length;
     var currentSize;
