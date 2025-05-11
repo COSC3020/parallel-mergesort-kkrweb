@@ -6,16 +6,10 @@
 
 
 
-
-
-
-
 ////
 
 
 
-
-var Parallel = require('paralleljs');
 
 function parallelMergeSort(inputArray) 
 {
@@ -49,38 +43,12 @@ function parallelMergeSort(inputArray)
         partitions.push(inputArray.slice(i, endPos));
     }
 
-    var p = new Parallel(partitions, {
-        evalPath: 'eval.js',
-        synchronous: true
-    });
-
-    p.require(solvePartition);
-    p.require(reduceMerge);
+    sortedPartitions = partitions.map(solvePartition);
     
-    sortedPartitions = p.map(function(data) {
-        return solvePartition(data);
-    });
+    return sortedPartitions.reduce(function(merged, current) {
+        return reduceMerge(merged, current);
+    }, []);
     
-    while(sortedPartitions.length > 1)
-    {
-        mergedPartitions = [];
-        
-        for(var i = 0; i < sortedPartitions.length; i += 2)
-        {
-            if(i + 1 < sortedPartitions.length)
-            {
-                mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
-            }
-            else
-            {
-                mergedPartitions.push(sortedPartitions[i]);
-            }
-        }
-        
-        sortedPartitions = mergedPartitions;
-    }
-
-    return sortedPartitions[0] || [];
 }
 
 
