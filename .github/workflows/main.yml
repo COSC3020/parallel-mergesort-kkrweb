@@ -1,6 +1,5 @@
 name: Test Parallel Mergesort
-on:
-  push:
+on: push
 
 jobs:
   test:
@@ -13,5 +12,7 @@ jobs:
         node-version: '20'
     - name: Install dependencies
       run: npm install paralleljs
+    - name: Verify eval.js exists
+      run: ls -la eval.js
     - name: Run tests
       run: node code.test.js
