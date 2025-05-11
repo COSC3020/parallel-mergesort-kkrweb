@@ -1,37 +1,8 @@
 // Kane Kriz
 // UWYO COSC 3020 Algorithms - parallel mergesort primary code.js file
-// 10 May 2025
+// 11 May 2025
 //
 //
-
-
-
-
-
-//___________________________________________________________________________
-
-/**  
- _____ DISCLAIMER: 
- 
- This implementation logically follows parallel merge sort  
- ...but runs sequentially due to JS of course being single threaded and my intense difficulty getting paralleljs imported into the repo, file, or global environment in any capacity as was done in class. 
-
- The span analysis Θ(n/p log n + n log p) from within the readme assumes parallel execution and working ideal circumstances.  
-
-This is probably me making a dumb mistake with workflows or github file interactions but I thought that submitting this with the analysis would be sufficient,
-...largely in part due to the actual intended paralleljs functionality being ported into this file would take a few lines at maximum and swapping of a slight amount of logic.
-
-If this is sufficient or not, please let me know.
-
-Exercise #30, and I of course want to do it right. Maybe there is some simple solution that I am missing to help import paralleljs, or maybe I don't have permissions to import packages like that within this class format.
-
-Either way, I'm sure you would know.
-
-Thank you for the help and consideration throughtout the semester.
-
-**/
-
-//___________________________________________________________________________
 
 
 
@@ -39,6 +10,10 @@ Thank you for the help and consideration throughtout the semester.
 
 ////
 
+
+
+
+var MapReduce = require('mapreduce-js').MapReduce;
 
 function parallelMergeSort(inputArray) 
 {
@@ -74,37 +49,39 @@ function parallelMergeSort(inputArray)
         partitions.push(inputArray.slice(i, endPos));
     }
 
-    var partitionsLength = partitions.length;
-    
-    sortedPartitions = partitions.map(function(partition) 
-    {
-        return solvePartition(partition); 
-    });
-
-    var sortedPartsLength = sortedPartitions.length;
-    
-    while(sortedPartsLength > 1)
-    {
-        mergedPartitions = [];
-        
-        for(var i = 0; i < sortedPartsLength; i += 2)
+    ///map
+    var mapReduce = new MapReduce(
+        partitions,
+        solvePartition, 
+        function(results) 
         {
-            if(i + 1 < sortedPartsLength)
+            //reduce
+            var sortedParts = results;
+         
+            while(sortedParts.length > 1) 
             {
-                mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
+                var merged = [];
+             
+                for(var i = 0; i < sortedParts.length; i += 2) 
+                {
+                    if(i + 1 < sortedParts.length) 
+                    {
+                        merged.push(reduceMerge(sortedParts[i], sortedParts[i+1]));
+                    } 
+                     
+                    else 
+                    {
+                        merged.push(sortedParts[i]);
+                    }
+                }
+             
+                sortedParts = merged;
             }
-                
-            else
-            {
-                mergedPartitions.push(sortedPartitions[i]);
-            }
+            return sortedParts[0];
         }
-        
-        sortedPartitions = mergedPartitions;
-        sortedPartsLength = sortedPartitions.length;
-    }
+    );
 
-    return sortedPartitions[0];
+    return mapReduce.execute();
 }
 
 
