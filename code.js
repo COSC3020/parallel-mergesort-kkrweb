@@ -50,41 +50,36 @@ function parallelMergeSort(inputArray)
     }
 
     var p = new Parallel(partitions, {
-        evalPath: 'eval.js'
+        evalPath: 'eval.js',
+        synchronous: true 
     });
 
     p.require(solvePartition);
     p.require(reduceMerge);
     
-    return p.map(function(partition) 
+ 
+    sortedPartitions = p.map(solvePartition);
+    
+    while(sortedPartitions.length > 1)
     {
-        return solvePartition(partition); 
-    }).then(function(sortedPartitions) 
-    {
-        var sortedPartsLength = sortedPartitions.length;
+        mergedPartitions = [];
         
-        while(sortedPartsLength > 1)
+        for(var i = 0; i < sortedPartitions.length; i += 2)
         {
-            mergedPartitions = [];
-            
-            for(var i = 0; i < sortedPartsLength; i += 2)
+            if(i + 1 < sortedPartitions.length)
             {
-                if(i + 1 < sortedPartitions.length)
-                {
-                    mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
-                }
-                else
-                {
-                    mergedPartitions.push(sortedPartitions[i]);
-                }
+                mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
             }
-            
-            sortedPartitions = mergedPartitions;
-            sortedPartsLength = sortedPartitions.length;
+            else
+            {
+                mergedPartitions.push(sortedPartitions[i]);
+            }
         }
+        
+        sortedPartitions = mergedPartitions;
+    }
 
-        return sortedPartitions[0];
-    });
+    return sortedPartitions[0];
 }
 
 
