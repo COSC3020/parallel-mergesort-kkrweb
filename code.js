@@ -19,74 +19,74 @@ var Parallel = require('paralleljs');
 
 function parallelMergeSort(inputArray) 
 {
-    var corePlaceholderCount;
-    var partitionSize;
-    var partitions;
-    var sortedPartitions;
-    var mergedPartitions;
+    var corePlaceholderCount;
+    var partitionSize;
+    var partitions;
+    var sortedPartitions;
+    var mergedPartitions;
 
-    var inputLength = inputArray.length;
-    corePlaceholderCount = 2;
+    var inputLength = inputArray.length;
+    corePlaceholderCount = 2;
 
-    if(inputLength <= 1) 
-    {
-        return inputArray;
-    }
+    if(inputLength <= 1) 
+    {
+        return inputArray;
+    }
 
-    partitionSize = Math.ceil(inputLength / corePlaceholderCount);
+    partitionSize = Math.ceil(inputLength / corePlaceholderCount);
 
-    partitions = [];
-  
-    for(var i = 0; i < inputLength; i += partitionSize)
-    {
-        var endPos = i + partitionSize;
-        
-        if(endPos > inputLength)
-        {
-            endPos = inputLength;
-        }
-        
-        partitions.push(inputArray.slice(i, endPos));
-    }
+    partitions = [];
+  
+    for(var i = 0; i < inputLength; i += partitionSize)
+    {
+        var endPos = i + partitionSize;
+        
+        if(endPos > inputLength)
+        {
+            endPos = inputLength;
+        }
+        
+        partitions.push(inputArray.slice(i, endPos));
+    }
 
-    var p = new Parallel(partitions, {
-        evalPath: 'eval.js'
-    });
+    var p = new Parallel(partitions, {
+        evalPath: 'eval.js'
+    });
 
-    p.require(solvePartition);
-    p.require(reduceMerge);
-    
-    return p.map(function(partition) 
-    {
-        return solvePartition(partition); 
-    }).then(function(sortedPartitions) 
-    {
-        var sortedPartsLength = sortedPartitions.length;
-        
-        while(sortedPartsLength > 1)
-        {
-            mergedPartitions = [];
-            
-            for(var i = 0; i < sortedPartsLength; i += 2)
-            {
-                if(i + 1 < sortedPartitions.length)
-                {
-                    mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
-                }
-                    
-                else
-                {
-                    mergedPartitions.push(sortedPartitions[i]);
-                }
-            }
-            
-            sortedPartitions = mergedPartitions;
-            sortedPartsLength = sortedPartitions.length;
-        }
+    p.require(solvePartition);
+    p.require(reduceMerge);
+    
+    return p.map(function(partition) 
+    {
+        return solvePartition(partition); 
+    }).then(function(sortedPartitions) 
+    {
+        var sortedPartsLength = sortedPartitions.length;
+        
+        while(sortedPartsLength > 1)
+        {
+            mergedPartitions = [];
+            
+            for(var i = 0; i < sortedPartsLength; i += 2)
+            {
+                if(i + 1 < sortedPartitions.length)
+                {
+                    mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
+                }
+                else
+                {
+                    mergedPartitions.push(sortedPartitions[i]);
+                }
+            }
+            
+            sortedPartitions = mergedPartitions;
+            sortedPartsLength = sortedPartitions.length;
+        }
 
-        return sortedPartitions[0];
-    });
+        return sortedPartitions[0];
+    });
 }
+
 
 
 
