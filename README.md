@@ -132,3 +132,7 @@ Wikipedia Contributors. “Directed Acyclic Graph.” Wikipedia, Wikimedia Found
 “MapReduce.” Wikipedia, 22 Apr. 2020, en.wikipedia.org/wiki/MapReduce.
 
 “MapReduce Architecture.” GeeksforGeeks, 8 Sept. 2020, www.geeksforgeeks.org/mapreduce-architecture/.
+
+“Await.” MDN Web Docs, developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await.
+
+“JavaScript Async.” Www.w3schools.com, www.w3schools.com/js/js_async.asp.
