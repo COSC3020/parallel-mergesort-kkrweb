@@ -10,7 +10,7 @@
 
 
 
-Var Parallel = require('paralleljs');
+var Parallel = require('paralleljs');
 
 function parallelMergeSort(inputArray) 
 {
