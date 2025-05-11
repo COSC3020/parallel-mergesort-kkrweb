@@ -51,13 +51,12 @@ function parallelMergeSort(inputArray)
 
     var p = new Parallel(partitions, {
         evalPath: 'eval.js',
-        synchronous: true 
+        synchronous: true
     });
 
     p.require(solvePartition);
     p.require(reduceMerge);
     
- 
     sortedPartitions = p.map(solvePartition);
     
     while(sortedPartitions.length > 1)
@@ -70,6 +69,7 @@ function parallelMergeSort(inputArray)
             {
                 mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
             }
+                
             else
             {
                 mergedPartitions.push(sortedPartitions[i]);
@@ -79,9 +79,16 @@ function parallelMergeSort(inputArray)
         sortedPartitions = mergedPartitions;
     }
 
-    return sortedPartitions[0];
+    if(sortedPartitions.length > 0)
+        {
+        return sortedPartitions[0];
+        }
+        
+    else
+        {
+        return [];
+        }
 }
-
 
 
 
