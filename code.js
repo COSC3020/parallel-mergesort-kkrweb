@@ -8,12 +8,15 @@
 
 
 
+
+
 ////
 
 
 
 
-var MapReduce = require('mapreduce-js').MapReduce;
+
+var Parallel = require('paralleljs');
 
 function parallelMergeSort(inputArray) 
 {
@@ -49,41 +52,38 @@ function parallelMergeSort(inputArray)
         partitions.push(inputArray.slice(i, endPos));
     }
 
-    ///map
-    var mapReduce = new MapReduce(
-        partitions,
-        solvePartition, 
-        function(results) 
+    var p = new Parallel(partitions);
+    
+    sortedPartitions = p.map(function(partition) 
+    {
+        return solvePartition(partition); 
+    }).data;
+
+    var sortedPartsLength = sortedPartitions.length;
+    
+    while(sortedPartsLength > 1)
+    {
+        mergedPartitions = [];
+        
+        for(var i = 0; i < sortedPartsLength; i += 2)
         {
-            //reduce
-            var sortedParts = results;
-         
-            while(sortedParts.length > 1) 
+            if(i + 1 < sortedPartitions.length)
             {
-                var merged = [];
-             
-                for(var i = 0; i < sortedParts.length; i += 2) 
-                {
-                    if(i + 1 < sortedParts.length) 
-                    {
-                        merged.push(reduceMerge(sortedParts[i], sortedParts[i+1]));
-                    } 
-                     
-                    else 
-                    {
-                        merged.push(sortedParts[i]);
-                    }
-                }
-             
-                sortedParts = merged;
+                mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
             }
-            return sortedParts[0];
+                
+            else
+            {
+                mergedPartitions.push(sortedPartitions[i]);
+            }
         }
-    );
+        
+        sortedPartitions = mergedPartitions;
+        sortedPartsLength = sortedPartitions.length;
+    }
 
-    return mapReduce.execute();
+    return sortedPartitions[0];
 }
-
 
 
 ////
