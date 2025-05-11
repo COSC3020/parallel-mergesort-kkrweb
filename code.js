@@ -10,6 +10,7 @@
 
 
 
+Var Parallel = require('paralleljs');
 
 function parallelMergeSort(inputArray) 
 {
@@ -43,7 +44,8 @@ function parallelMergeSort(inputArray)
         partitions.push(inputArray.slice(i, endPos));
     }
 
-    sortedPartitions = partitions.map(solvePartition);
+    var p = new Parallel(partitions);
+    sortedPartitions = p.map(solvePartition);
     
     return sortedPartitions.reduce(function(merged, current) {
         return reduceMerge(merged, current);
