@@ -45,12 +45,14 @@ function parallelMergeSort(inputArray)
     }
 
     var p = new Parallel(partitions);
-    sortedPartitions = p.map(solvePartition);
     
-    return sortedPartitions.reduce(function(merged, current) {
-        return reduceMerge(merged, current);
-    }, []);
-    
+    return p.map(solvePartition).then(function(sortedPartitions)
+                                      {
+        return sortedPartitions.reduce(function(merged, current) 
+                                       {
+            return reduceMerge(merged, current);
+        }, []);
+    });
 }
 
 
