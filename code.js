@@ -57,7 +57,9 @@ function parallelMergeSort(inputArray)
     p.require(solvePartition);
     p.require(reduceMerge);
     
-    sortedPartitions = p.map(solvePartition);
+    sortedPartitions = p.map(function(data) {
+        return solvePartition(data);
+    });
     
     while(sortedPartitions.length > 1)
     {
@@ -69,7 +71,6 @@ function parallelMergeSort(inputArray)
             {
                 mergedPartitions.push(reduceMerge(sortedPartitions[i], sortedPartitions[i + 1]));
             }
-                
             else
             {
                 mergedPartitions.push(sortedPartitions[i]);
@@ -79,17 +80,8 @@ function parallelMergeSort(inputArray)
         sortedPartitions = mergedPartitions;
     }
 
-    if(sortedPartitions.length > 0)
-        {
-        return sortedPartitions[0];
-        }
-        
-    else
-        {
-        return [];
-        }
+    return sortedPartitions[0] || [];
 }
-
 
 
 
