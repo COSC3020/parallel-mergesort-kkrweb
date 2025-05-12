@@ -35,7 +35,7 @@ Feedback Request 1 Date: 10 May 2025
 
 Feedback Request 2 Date: 11 May 2025
 
-
+...
 
 //
 
@@ -99,7 +99,19 @@ Overall, the worst case occurs when the algorithm must fully sort each partition
 
 The $Θ((n/p) * \log n + n \log p)$ bound considers both parallel sorting and sequential merging costs.
 
-Thus, the worst case span of this parallel merge sort implementation is $Θ((n/p) * \log n + n \log p)$.
+Thus, the worst case span is $Θ( (n/p) ∗ \log n + n * \log p)$ assuming a limited number of processors.
+
+Assuming infinite processors, this simplifies to $Θ(n)$ as n goes to infinity.
+
+This is the case as the $(n/p) \log ⁡n$ term approaches zero while the $\log p$ term is constant.
+
+However, the infinite processor parallelism would not impact the sequential parts of the implementation.
+
+This results in overall merging still requiring Θ(n) operations, now the dominant asymptotic span value for the implementation.
+
+Assuming infinite processors, the worst case span of the implementation is thus Θ(n).
+
+
 
 
 
