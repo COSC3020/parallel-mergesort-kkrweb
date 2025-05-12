@@ -1,0 +1,12 @@
+{
+  "name": "parallel-mergesort-kkrweb",
+  "version": "1.0.0",
+  "description": "Parallel MergeSort implementation",
+  "main": "parallel-mergesort.js",
+  "scripts": {
+    "test": "node code.test.js"
+  },
+  "dependencies": {
+    "paralleljs": "^1.1.0"
+  }
+}
